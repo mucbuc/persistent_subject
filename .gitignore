@@ -6,3 +6,5 @@ build_debug/
 xcuserdata/
 xcuserdatad/
 *.xcuserdatad/
+test/build/
+test/test.xcodeproj
