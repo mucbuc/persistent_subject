@@ -1,8 +1,8 @@
 {
 	'target_defaults': {
-		'include_dirs': [
-			'.'
-		], #include_dirs
+		'includes': [
+			'plank/def/cpp11.gypi'
+		],
 		'sources': [ 
 			'src/components/componentsfwd.h',
 			'src/components/context.h',
@@ -26,8 +26,6 @@
 			'src/core/persistent.hxx',
 			'src/core/tests.h',
 			'src/core/tests.hxx',
-			'src/core/traverse.h',
-			'src/core/traverse.hxx',
 			'src/core/typetraits.h',
 			'src/core/typeutills.h',
 			'src/create/abstract_factory.h',
@@ -40,7 +38,5 @@
 			'src/create/singleton.h',
 			'src/create/singleton.hxx',
 		], #sources
-		'cflags': [ '-std=c++11', '-stdlib=libc++' ],
-		'ldflags': [ '-stdlib=libc++' ],
 	}
 }

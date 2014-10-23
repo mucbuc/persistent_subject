@@ -20,8 +20,6 @@
 
 #include <cstdlib>
 
-#include "debug.h"
-
 namespace om636
 {
 	template<class T>
