@@ -1,8 +1,8 @@
 #ifndef _RANGE_H_8900700
 #define _RANGE_H_8900700
 
-#include <om636/src/components/componentsfwd.h>
-#include <om636/src/core/core.h>
+#include <src/components/componentsfwd.h>
+#include <src/core/core.h>
 #include <tuple>
 
 namespace om636

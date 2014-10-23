@@ -1,6 +1,4 @@
-#include <cassert>
-#define ASSERT( pred ) assert( pred )
-
+#include "test.h"
 #include "context_test.h"
 #include "observer_test.h"
 

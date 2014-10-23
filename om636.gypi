@@ -1,7 +1,8 @@
 {
 	'target_defaults': {
 		'includes': [
-			'plank/def/cpp11.gypi'
+			'plank/def/cpp11.gypi',
+			'lib/traverse/def/base.gypi'
 		],
 		'sources': [ 
 			'src/components/componentsfwd.h',
