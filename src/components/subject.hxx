@@ -5,13 +5,13 @@ namespace om636
     /////////////////////////////////////////////////////////////////////////////////////////////
 	// basic_subject
 	/////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    basic_subject<T>::basic_subject()
+    template<class T, template<class> class U>
+    basic_subject<T, U>::basic_subject()
     {}
     
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    basic_subject<T>::~basic_subject()
+    template<class T, template<class> class U>
+    basic_subject<T, U>::~basic_subject()
     {
         std::for_each( m_observers.begin(), m_observers.end(), [=](observer_type i) {
             i->detach( this );
@@ -19,22 +19,22 @@ namespace om636
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    void basic_subject<T>::attach( const observer_type & o )
+    template<class T, template<class> class U>
+    void basic_subject<T, U>::attach( const observer_type & o )
     {
         m_observers.push_back( o );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    void basic_subject<T>::detach( const observer_type & o )
+    template<class T, template<class> class U>
+    void basic_subject<T, U>::detach( const observer_type & o )
     {
         m_observers.erase( find( m_observers.begin(), m_observers.end(), o ) );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    void basic_subject<T>::on_swap( context_type & lhs, context_type & rhs )
+    template<class T, template<class> class U>
+    void basic_subject<T, U>::on_swap( context_type & lhs, context_type & rhs )
     {
         std::for_each( m_observers.begin(), m_observers.end(), [&](observer_type i) {
             i->on_swap( lhs, rhs );
@@ -42,29 +42,30 @@ namespace om636
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
+    template<class T, template<class> class U>
     template<class V>
-    typename basic_subject<T>::value_type basic_subject<T>::on_init(V & v)
+    typename basic_subject<T, U>::value_type basic_subject<T, U>::on_init(V & v)
     {
         return value_type();
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
+    template<class T, template<class> class U>
     template<class V, class W>
-    typename basic_subject<T>::value_type basic_subject<T>::on_init(V &, const W & v)
+    typename basic_subject<T, U>::value_type basic_subject<T, U>::on_init(V &, const W & v)
     {
         return value_type(v);
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
+    template<class T, template<class> class U>
     template<class V>
-    V basic_subject<T>::to_value(const context_type & c)
+    V basic_subject<T, U>::to_value(const context_type & c)
     {
         return V( c.value_ref() );
     }
     
+#if 0
 #pragma mark safe_subject
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,5 +281,7 @@ namespace om636
 	{
         state(n)->on_invert( n );
     }
+
+    #endif 
     
 }	// om636

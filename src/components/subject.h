@@ -11,7 +11,6 @@ objective:
 #ifndef SUBJECT_H__3OinTKlusSf57wk9G41geIdYXzUEVv
 #define SUBJECT_H__3OinTKlusSf57wk9G41geIdYXzUEVv
 
-#include <src/components/observer.h>
 #include <src/components/context.h>
 #include <src/core/persistent.h>
 #include <src/create/singleton.h>
@@ -22,13 +21,13 @@ objective:
 namespace om636
 {
     // no attach/detach while update
-    template<class T>
+    template<class T, template<class> class U>
     struct basic_subject
     : default_subject::policy< T >
     {
         typedef T context_type;
         typedef typename default_subject::traits<context_type>::value_type value_type;
-        typedef observer< context_type > * observer_type;
+        typedef U< context_type > * observer_type;
 
         basic_subject();
         virtual ~basic_subject();
@@ -53,6 +52,7 @@ namespace om636
         container_type m_observers;
     };
     
+#if 0
     template<class T>
     struct safe_subject
     : public T
@@ -135,7 +135,8 @@ namespace om636
         virtual void on_dec(context_type &) const;
         virtual void on_invert(context_type &) const;
     };
-    
+#endif  
+
 #if 0
     // abstract interface
 	template<class T>
