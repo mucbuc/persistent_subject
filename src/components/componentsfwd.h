@@ -5,9 +5,9 @@
 
 namespace om636
 {
-	// context
-    template<class> struct empty_subject;
-    template<class, template<class> class> class context;//class = empty_subject> class context;
+	// // context
+ //    template<class> struct empty_subject;
+ //    template<class, template<class> class> class context;//class = empty_subject> class context;
     
 	// composite_units
 	template<class> class default_unit;

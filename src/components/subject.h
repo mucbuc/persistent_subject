@@ -11,7 +11,7 @@ objective:
 #ifndef SUBJECT_H__3OinTKlusSf57wk9G41geIdYXzUEVv
 #define SUBJECT_H__3OinTKlusSf57wk9G41geIdYXzUEVv
 
-#include <src/components/context.h>
+#include <lib/context/interface.h>
 #include <src/core/persistent.h>
 #include <src/create/singleton.h>
 
@@ -52,7 +52,7 @@ namespace om636
         container_type m_observers;
     };
     
-#if 0
+
     template<class T>
     struct safe_subject
     : public T
@@ -76,36 +76,7 @@ namespace om636
     };
     
     template<class T>
-    struct persistent_subject
-    : public T
-    {
-        typedef T base_type;
-        using typename base_type::context_type;
-        using typename base_type::value_type;
-        using base_type::on_init;
-
-        persistent_subject();
-        persistent_subject(const char *);
-        virtual ~persistent_subject();
-        
-        template<class U>
-        static value_type on_init(U &, const std::string &);
-    
-        virtual void on_swap(context_type &, context_type &);
-        
-        std::string & name();
-        std::string name() const;
-        
-    private:
-        
-        typedef om636::persistent< std::map< std::string, std::string > > persistent_type;
-        typedef singleton< persistent_type, default_lifetime< persistent_type >, create_new< persistent_type > > singleton_type;
-        
-        std::string m_name;
-    };
-    
-    template<class T>
-	struct state_subject
+    struct state_subject
     : private T
     {
         // types
@@ -120,22 +91,23 @@ namespace om636
         virtual ~state_subject();
         
         // comparisons
-		virtual bool on_equal(const context_type &, const context_type &) const;
-		virtual int on_cmp(const context_type &, const context_type &) const;
-		virtual int on_sign(const context_type &) const;
+        virtual bool on_equal(const context_type &, const context_type &) const;
+        virtual int on_cmp(const context_type &, const context_type &) const;
+        virtual int on_sign(const context_type &) const;
         
-		// modifiers
+        // modifiers
         virtual bool on_swap(context_type &, context_type &) const;
-		virtual void on_add(context_type &, const context_type &) const;
-		virtual void on_subtract(context_type &, const context_type &) const;
-		virtual void on_mult(context_type &, const context_type &) const;
-		virtual void on_divide(context_type &, const context_type &) const;
-		virtual void on_remainder(context_type &, const context_type &) const;
+        virtual void on_add(context_type &, const context_type &) const;
+        virtual void on_subtract(context_type &, const context_type &) const;
+        virtual void on_mult(context_type &, const context_type &) const;
+        virtual void on_divide(context_type &, const context_type &) const;
+        virtual void on_remainder(context_type &, const context_type &) const;
         virtual void on_inc(context_type &) const;
         virtual void on_dec(context_type &) const;
         virtual void on_invert(context_type &) const;
     };
-#endif  
+
+        
 
 #if 0
     // abstract interface

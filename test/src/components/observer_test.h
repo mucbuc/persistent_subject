@@ -1,6 +1,6 @@
 #include <iostream>
 #include <src/core/core.h>
-#include <src/components/context.h>
+#include <lib/context/interface.h>
 #include <src/components/observer.h>
 #include <src/components/subject.h>
 
@@ -11,6 +11,12 @@
 
 namespace 
 {
+    
+    template<class T>
+    using basic_subject = om636::basic_subject< T, om636::observer >;
+    
+    template<class T>
+	using safe_policy = om636::safe_subject< basic_subject< T > >;
 	
 	template<class T>
 	struct test_observer : om636::observer< T >
@@ -98,6 +104,8 @@ namespace
 	{
 		using namespace om636;
 		
+        
+        
 		typedef context< int, basic_subject > context_type;
 		typedef test_observer< context_type  > observer_type;
 		
@@ -178,43 +186,7 @@ namespace
 		ASSERT( 0 );
 	}
 	
-	template< template<class> class T >
-	void test_persistence()
-	{
-		typedef om636::context< int, T > context_type;
-		
-        const char * path( "persistent_storage.dat" );
-        
-		if (1)
-		{
-			context_type a( std::string("test_persistence_var"), path );
-			a = 1230;
-		}
-		
-		if (1)
-		{
-			context_type a( std::string("test_persistence_var"), path );
-			
-			ASSERT( a.value_ref() == 1230 );
-		
-			a = 1239;
-		}
-	
-		if (1)
-		{
-			context_type a( std::string("test_persistence_var"), path );
-		
-			ASSERT( a.value_ref() == 1239 );
-		}
-	}
-	
 	template<class T>
-	using safe_policy = om636::safe_subject< om636::basic_subject< T > >;
-	
-	template<class T>
-	using persistent_policy = om636::persistent_subject< safe_policy< T > >;
-	
-    template<class T>
     void run_observer_test()
     {
         using namespace om636;
@@ -223,7 +195,7 @@ namespace
         test_detach_while_swap< safe_policy >();
         test_subject_invalidate< safe_policy >();
         test_swap_while_swap< safe_policy >();
-        test_persistence< persistent_policy >();
+
         std::cout << "observer test passed" << std::endl;
 	}
 }
