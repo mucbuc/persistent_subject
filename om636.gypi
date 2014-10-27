@@ -24,8 +24,6 @@
 			'src/core/corefwd.h',
 			'src/core/persistent.h',
 			'src/core/persistent.hxx',
-			'src/core/tests.h',
-			'src/core/tests.hxx',
 			'src/core/typetraits.h',
 			'src/core/typeutills.h',
 			'src/create/abstract_factory.h',

@@ -19,23 +19,6 @@ namespace om636
 	// range	
 	template<int N> class index;
     
-    // subjects
-    template<class>
-    struct basic_subject;
-    
-    template<class>
-    struct safe_subject;
-    
-    template<class>
-    struct persistent_subject;
-    
-    template<class>
-	struct state_subject;
-
-    // observer
-    template<class>
-    struct observer; 
-    
 }	// om636 
 
 #endif // __COMPENETSFWDH__INCLUDE_GUARD__9879878979878
