@@ -1,7 +1,6 @@
 {
 	'target_defaults': {
 		'includes': [
-			'plank/def/cpp11.gypi',
 			'lib/traverse/def/base.gypi',
 			'lib/context/def/base.gypi'
 		],
