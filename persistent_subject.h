@@ -5,7 +5,7 @@
 
 #include <lib/om636/src/core/persistent.h>
 #include <lib/om636/src/create/singleton.h>
-
+#include "default_subject.h"
 namespace om636
 {
     template<class T>

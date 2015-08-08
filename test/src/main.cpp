@@ -1,11 +1,14 @@
-#include "test.h"
+#include <../plank/src/test.h>
 
-#include <lib/context/context.h>
+#include <lib/context/src/interface.h>
 
 #include <persistent_subject.h>
 
 // hacky way not to dupe basic_subject and safe_policy
-#include <lib/context/test/src/observer_test.h> /* basic_subject, safe_policy */ 
+//#include <lib/context/test/src/observer_test.h> /* basic_subject, safe_policy */
+
+#include <lib/sense/src/observer.h>
+#include <lib/sense/src/subject.h>
 
 template< template<class> class T >
 void test_persistence()
@@ -36,6 +39,12 @@ void test_persistence()
         ASSERT( a.value_ref() == 1239 );
     }
 }
+
+template<class T>
+using basic_subject = om636::basic_subject< T, om636::observer >;
+
+template<class T>
+using safe_policy = om636::safe_subject< basic_subject< T > >;
 
 template<class T>
 using persistent_policy = om636::persistent_subject< safe_policy< T > >;
