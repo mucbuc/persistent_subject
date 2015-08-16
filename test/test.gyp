@@ -14,8 +14,8 @@
 			'src/main.cpp',
 		], #sources
 		'include_dirs': [
-			'../plank/src/',
-			'../'
+			'plank/src/',
+			'.'
 		], #include_dirs		
 	}, #target_defaults
 }

@@ -1,14 +1,12 @@
-#include <../plank/src/test.h>
+#include <plank/src/test.h>
 
 #include <lib/context/src/interface.h>
 
-#include <persistent_subject.h>
-
-// hacky way not to dupe basic_subject and safe_policy
-//#include <lib/context/test/src/observer_test.h> /* basic_subject, safe_policy */
-
+// include order matters here => wtf? figure this out!!!
+#include <lib/persistent_subject/persistent_subject.h>
 #include <lib/sense/src/observer.h>
 #include <lib/sense/src/subject.h>
+
 
 template< template<class> class T >
 void test_persistence()
