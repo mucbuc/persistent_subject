@@ -1,6 +1,7 @@
 #ifndef PERSISTENT_H_INCLUDE_GUARD_543543HHGH
 #define PERSISTENT_H_INCLUDE_GUARD_543543HHGH
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 
