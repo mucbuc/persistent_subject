@@ -15,6 +15,10 @@
 		{
 			"origin": "https://github.com/mucbuc/om636.git",
 			"path": "test/lib"
+		},
+		{
+			"origin": "https://github.com/mucbuc/drop.git",
+			"path": "test/lib"
 		}
 	]
 }
