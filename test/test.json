@@ -1,0 +1,11 @@
+{
+	"import":[
+		"lib/context/def.json",
+		"lib/persistent_subject/def.json",
+		"lib/sense/def.json",
+		"lib/traverse/traverse.json"
+	],
+	"sources": [
+		"src/main.cpp"
+	]
+}

@@ -1,0 +1,6 @@
+{
+	"sources": [
+		"persistent_subject.h",
+		"persistent_subject.hxx"		
+	]
+}
