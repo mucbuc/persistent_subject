@@ -35,11 +35,8 @@ namespace om636
         base_type::on_init( lhs );
         
         string & value ( singleton_type::instance().storage()[ lhs.name() = name ] );
-        
-        stringstream strm( value );
-        
         value_type result;
-        strm >> result;
+        stringstream( value ) >> result;
         return result;
     }
     
