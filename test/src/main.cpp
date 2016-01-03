@@ -9,33 +9,33 @@
 
 
 
-template< template<class> class T >
-void test_persistence()
+template< template<class> class T, class U>
+void test_persistence(U u, U v)
 {
-    typedef om636::context< int, T > context_type;
+    typedef om636::context< U, T > context_type;
     
     const char * path( "persistent_storage.dat" );
     
     if (1)
     {
         context_type a( std::string("test_persistence_var"), path );
-        a = 1230;
+        a = u;
     }
     
     if (1)
     {
         context_type a( std::string("test_persistence_var"), path );
         
-        ASSERT( a.value_ref() == 1230 );
+        ASSERT( a.value_ref() == u );
     
-        a = 1239;
+        a = v;
     }
 
     if (1)
     {
         context_type a( std::string("test_persistence_var"), path );
     
-        ASSERT( a.value_ref() == 1239 );
+        ASSERT( a.value_ref() == v );
     }
 }
 
@@ -51,7 +51,7 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 int main(int argc, const char * argv[])
 {
 	
-    test_persistence< persistent_policy >();
+    test_persistence< persistent_policy, int >( 1230, 1239 );
     
     return 0;
 }
