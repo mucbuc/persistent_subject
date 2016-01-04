@@ -10,7 +10,7 @@
 
 
 template< template<class> class T, class U>
-void test_persistence(U u, U v)
+void test_persistence(U u, U v, std::string name)
 {
     typedef om636::context< U, T > context_type;
     
@@ -18,13 +18,13 @@ void test_persistence(U u, U v)
     
     if (1)
     {
-        context_type a( std::string("test_persistence_var"), path );
+        context_type a( name, path );
         a = u;
     }
     
     if (1)
     {
-        context_type a( std::string("test_persistence_var"), path );
+        context_type a( name, path );
         
         ASSERT( a.value_ref() == u );
     
@@ -33,7 +33,7 @@ void test_persistence(U u, U v)
 
     if (1)
     {
-        context_type a( std::string("test_persistence_var"), path );
+        context_type a( name, path );
     
         ASSERT( a.value_ref() == v );
     }
@@ -51,7 +51,8 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 int main(int argc, const char * argv[])
 {
 	
-    test_persistence< persistent_policy, int >( 1230, 1239 );
+    test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
+    //test_persistence< persistent_policy, std::string >( std::string("hello"), std::string("bye"), std::string("test_persistence_int") );
     
     return 0;
 }
