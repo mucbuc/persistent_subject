@@ -34,7 +34,8 @@ namespace om636
 
         if (lhs.m_name.empty()) 
         {
-            lhs.m_local.reset( new value_type(init) );
+            lhs.m_local.reset( new value_type() );
+            stringstream( init ) >> * lhs.m_local;
             return * lhs.m_local;
         }
         
