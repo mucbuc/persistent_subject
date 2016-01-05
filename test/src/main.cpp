@@ -22,21 +22,23 @@ void test_persistence(U u, U v, std::string name)
         a = u;
     }
     
-    // if (1)
-    // {
-    //     context_type a( name, path );
+    if (1)
+    {
+        context_type a( name, path );
         
-    //     ASSERT( a.value_ref() == u );
+        std::cout << a.value_ref() << std::endl;
+        
+        ASSERT( a.value_ref() == u );
     
-    //     a = v;
-    // }
+        a = v;
+    }
 
-    // if (1)
-    // {
-    //     context_type a( name, path );
+     if (1)
+     {
+         context_type a( name, path );
     
-    //     ASSERT( a.value_ref() == v );
-    // }
+         ASSERT( a.value_ref() == v );
+     }
 }
 
 template<class T>
@@ -50,7 +52,7 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 
 int main(int argc, const char * argv[])
 {
-    test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
+    //test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
     test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
     
     return 0;
