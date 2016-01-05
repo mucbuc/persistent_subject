@@ -1,4 +1,3 @@
-
 namespace om636
 {
 #pragma mark peristent_subject 
@@ -35,11 +34,15 @@ namespace om636
         if (lhs.m_name.empty()) 
         {
             lhs.m_local.reset( new value_type() );
-            stringstream( init ) >> * lhs.m_local;
+            
+            stringstream tmp;
+            tmp << init;
+            tmp >> * lhs.m_local;
             return * lhs.m_local;
         }
-        
+
         string & value ( singleton_type::instance().storage()[ lhs.name() = init ] );
+        
         value_type result;
         stringstream( value ) >> result;
         return result;
@@ -53,16 +56,22 @@ namespace om636
 
         if (rhs.m_local)
         {
-            ASSERT( !name().empty() ); 
+            ASSERT( !lhs.name().empty() ); 
 
-            string & value ( singleton_type::instance().storage()[ name() ] );
-            value = * rhs.m_local;
+            stringstream tmp; 
+            tmp << * rhs.m_local;
+
+            string & value ( singleton_type::instance().storage()[ lhs.name() ] );
+            value = tmp.str(); 
+
+            rhs.m_local.reset();
+            rhs.name() = lhs.name();
         }
-        else
+        else 
         {
-            lhs.name() = rhs.name(); 
+            std::swap(lhs.name(), rhs.name() );
         }
-        
+
         base_type::on_swap( lhs, rhs );
     }
         

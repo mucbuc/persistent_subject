@@ -26,8 +26,6 @@ void test_persistence(U u, U v, std::string name)
     {
         context_type a( name, path );
         
-        std::cout << a.value_ref() << std::endl;
-        
         ASSERT( a.value_ref() == u );
     
         a = v;
@@ -52,8 +50,8 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 
 int main(int argc, const char * argv[])
 {
-    //test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
-    test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
+    test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
+    //test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
     
     return 0;
 }
