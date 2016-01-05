@@ -37,6 +37,8 @@ void test_persistence(U u, U v, std::string name)
     
          ASSERT( a.value_ref() == v );
      }
+
+     FOOTER;
 }
 
 template<class T>
@@ -51,7 +53,7 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 int main(int argc, const char * argv[])
 {
     test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
-    //test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
+    test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
     
     return 0;
 }
