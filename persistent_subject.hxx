@@ -4,6 +4,60 @@ namespace om636
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
+    persistent_subject<T>::named::named(const string_type & name)
+    : m_name( name )
+    {}
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    void persistent_subject<T>::named::on_swap(context_type & lhs, context_type & rhs)
+    {
+
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::named::name() -> string_type & 
+    {
+        return m_name;
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::named::name() const -> string_type
+    {
+        return m_name;
+    }
+     
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    persistent_subject<T>::temporary::temporary(const value_type & v)
+    : m_value(v)
+    {}
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    void persistent_subject<T>::temporary::on_swap(context_type & lhs, context_type & rhs)
+    {
+        
+    }
+            
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::temporary::value() -> value_type & 
+    {
+        return m_value; 
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::temporary::value() const -> value_type
+    {
+        return m_value; 
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
     persistent_subject<T>::persistent_subject()
     : base_type()
     , m_name()
@@ -28,7 +82,6 @@ namespace om636
     template<class U, class V> 
     auto persistent_subject<T>::on_init(U & lhs, const V & init)->value_type
     {
-        using std::string;
         using std::stringstream;
 
         if (lhs.m_name.empty()) 
@@ -41,7 +94,7 @@ namespace om636
             return * lhs.m_local;
         }
 
-        string & value ( singleton_type::instance().storage()[ lhs.name() = init ] );
+        string_type & value ( singleton_type::instance().storage()[ lhs.name() = init ] );
         
         value_type result;
         stringstream( value ) >> result;
@@ -77,14 +130,14 @@ namespace om636
         
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    std::string & persistent_subject<T>::name()
+    auto persistent_subject<T>::name() -> string_type &
     {
         return m_name;
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    std::string persistent_subject<T>::name() const
+    auto persistent_subject<T>::name() const -> string_type
     {
         return m_name;
     }
