@@ -26,31 +26,41 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    template<class U>
-    auto persistent_subject<T>::on_init(U & lhs, const std::string & name)->value_type
+    template<class U, class V> 
+    auto persistent_subject<T>::on_init(U & lhs, const V & init)->value_type
     {
         using std::string;
         using std::stringstream;
+
+        if (lhs.m_name.empty()) 
+        {
+            lhs.m_local.reset( new value_type(init) );
+            return * lhs.m_local;
+        }
         
-        base_type::on_init( lhs );
-        
-        string & value ( singleton_type::instance().storage()[ lhs.name() = name ] );
+        string & value ( singleton_type::instance().storage()[ lhs.name() = init ] );
         value_type result;
         stringstream( value ) >> result;
         return result;
     }
-    
+
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     void persistent_subject<T>::on_swap(context_type & lhs, context_type & rhs)
     {
         using namespace std;
-        
-        string & value ( singleton_type::instance().storage()[ name() ] );
-        
-        stringstream strm2;
-        strm2 << rhs.value_ref();
-        value = strm2.str();
+
+        if (rhs.m_local)
+        {
+            ASSERT( !name().empty() ); 
+
+            string & value ( singleton_type::instance().storage()[ name() ] );
+            value = * rhs.m_local;
+        }
+        else
+        {
+            lhs.name() = rhs.name(); 
+        }
         
         base_type::on_swap( lhs, rhs );
     }

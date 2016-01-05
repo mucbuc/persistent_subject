@@ -6,6 +6,8 @@
 		"lib/traverse/traverse.json"
 	],
 	"sources": [
-		"src/main.cpp"
+		"src/main.cpp",
+		"lib/om636/src/core/persistent.h",
+		"lib/om636/src/core/persistent.hxx"
 	]
 }
