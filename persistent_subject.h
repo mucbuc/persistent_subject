@@ -54,9 +54,6 @@ namespace om636
         struct named : state
         {
             virtual ~named() = default;
-            
-            named(const string_type &); 
-
             virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const; 
             virtual value_type value(persistent_subject & lhs) const; 
         };
@@ -64,9 +61,6 @@ namespace om636
         struct temporary : state
         {
             virtual ~temporary() = default;
-            
-            temporary() = default;
-
             virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const;
             virtual value_type value(persistent_subject & lhs) const; 
         };
@@ -75,7 +69,6 @@ namespace om636
         typedef singleton< persistent_type, default_lifetime< persistent_type >, create_new< persistent_type > > singleton_type;
         
         string_type m_buffer;
-        std::shared_ptr<value_type> m_local;
         std::shared_ptr<state> m_state;
     };
 }   //om636

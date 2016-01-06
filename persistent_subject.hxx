@@ -11,17 +11,6 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    persistent_subject<T>::named::named(const string_type & name)
-    {
-        // string_type & value ( singleton_type::instance().storage()[ m_buffer ] );
-        
-        // value_type result;
-        // stringstream( value ) >> result;
-        // return result;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
     auto persistent_subject<T>::named::value(persistent_subject & lhs) const -> value_type
     {
         value_type result;
@@ -35,7 +24,6 @@ namespace om636
     {
         std::swap( lhs.buffer(), rhs.buffer() );
     }
-     
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
@@ -71,7 +59,7 @@ namespace om636
     persistent_subject<T>::persistent_subject( const char * path )
     : base_type()
     , m_buffer( path )
-    , m_state(new named(path))
+    , m_state(new named())
     {
         singleton_type::instance().open( path );
     }
