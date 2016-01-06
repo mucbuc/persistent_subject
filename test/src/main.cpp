@@ -1,42 +1,40 @@
 #include "test.h"
 
-// include order matters here => wtf? figure this out!!!
-#include <lib/persistent_subject/persistent_subject.h>
-
 #include <lib/context/src/interface.h>
+#include <lib/persistent_subject/persistent_subject.h>
 #include <lib/sense/src/observer.h>
 #include <lib/sense/src/subject.h>
 
-
-
-template< template<class> class T >
-void test_persistence()
+template< template<class> class T, class U>
+void test_persistence(U u, U v, std::string name)
 {
-    typedef om636::context< int, T > context_type;
+    typedef om636::context< U, T > context_type;
     
     const char * path( "persistent_storage.dat" );
     
     if (1)
     {
-        context_type a( std::string("test_persistence_var"), path );
-        a = 1230;
+        context_type a( name, path );
+        a = u;
     }
     
     if (1)
     {
-        context_type a( std::string("test_persistence_var"), path );
+        context_type a( name, path );
         
-        ASSERT( a.value_ref() == 1230 );
+        ASSERT( a.value_ref() == u );
     
-        a = 1239;
+        a = v;
     }
 
-    if (1)
-    {
-        context_type a( std::string("test_persistence_var"), path );
+     if (1)
+     {
+         context_type a( name, path );
     
-        ASSERT( a.value_ref() == 1239 );
-    }
+         ASSERT( a.value_ref() == v );
+     }
+
+     FOOTER;
 }
 
 template<class T>
@@ -50,8 +48,8 @@ using persistent_policy = om636::persistent_subject< safe_policy< T > >;
 
 int main(int argc, const char * argv[])
 {
-	
-    test_persistence< persistent_policy >();
+    test_persistence< persistent_policy, int >( 1230, 1239, "test_persistence_int" );
+    test_persistence< persistent_policy, std::string >( "hello", "bye", "test_persistence_string" );
     
     return 0;
 }
