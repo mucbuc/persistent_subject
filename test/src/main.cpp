@@ -34,7 +34,7 @@ void test_persistence(U u, U v, std::string name)
      ASSERT( a.value_ref() == v );
     }
 
-    if (1)
+    if (0)
     {
         context_type a( name, path );
 

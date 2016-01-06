@@ -31,8 +31,10 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::named::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
+    void persistent_subject<T>::named::on_swap(context_type & lhs, context_type & rhs) const 
     {
+        ASSERT( !dynamic_cast<temporary*>(lhs.state_ref().get()));
+
         std::swap( lhs.buffer_ref(), rhs.buffer_ref() );
     }
 
@@ -47,7 +49,7 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::temporary::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
+    void persistent_subject<T>::temporary::on_swap(context_type & lhs, context_type & rhs) const 
     {
         ASSERT( dynamic_cast<named *>( lhs.state_ref().get() ) );
 

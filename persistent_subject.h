@@ -38,7 +38,7 @@ namespace om636
         struct state
         {
             virtual ~state() = default;
-            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const = 0; 
+            virtual void on_swap(context_type & lhs, context_type & rhs) const = 0; 
             virtual value_type value(persistent_subject & lhs) const = 0;
             void init(persistent_subject & lhs, string_type value) const; 
         protected: 
@@ -57,7 +57,7 @@ namespace om636
         {   
             using state::get_value;
             virtual ~named() = default;
-            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const; 
+            virtual void on_swap(context_type & lhs, context_type & rhs) const; 
             virtual value_type value(persistent_subject & lhs) const; 
         };
 
@@ -65,7 +65,7 @@ namespace om636
         {
             using state::get_value;
             virtual ~temporary() = default;
-            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const;
+            virtual void on_swap(context_type & lhs, context_type & rhs) const;
             virtual value_type value(persistent_subject & lhs) const; 
         };
 
