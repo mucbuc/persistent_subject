@@ -45,11 +45,11 @@ namespace om636
 
         typedef std::shared_ptr<state> state_pointer;
 
-        string_type & buffer();
-        string_type buffer() const;
+        string_type & buffer_ref();
+        const string_type & buffer_ref() const;
 
         state_pointer & state_ref();
-        state_pointer state_ref() const; 
+        const state_pointer & state_ref() const; 
 
         struct named : state
         {

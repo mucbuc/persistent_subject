@@ -1,13 +1,9 @@
 #include "test.h"
 
-// include order matters here => wtf? figure this out!!!
-#include <lib/persistent_subject/persistent_subject.h>
-
 #include <lib/context/src/interface.h>
+#include <lib/persistent_subject/persistent_subject.h>
 #include <lib/sense/src/observer.h>
 #include <lib/sense/src/subject.h>
-
-
 
 template< template<class> class T, class U>
 void test_persistence(U u, U v, std::string name)

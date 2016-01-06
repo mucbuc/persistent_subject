@@ -6,7 +6,7 @@ namespace om636
     template<class T>  
     void persistent_subject<T>::state::init(persistent_subject & lhs, string_type value) const
     {
-        lhs.buffer() = value;
+        lhs.buffer_ref() = value;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ namespace om636
     auto persistent_subject<T>::named::value(persistent_subject & lhs) const -> value_type
     {
         value_type result;
-        std::stringstream( singleton_type::instance().storage()[ lhs.buffer() ] ) >> result;
+        std::stringstream( singleton_type::instance().storage()[ lhs.buffer_ref() ] ) >> result;
         return result;
     }
 
@@ -22,7 +22,7 @@ namespace om636
     template<class T>
     void persistent_subject<T>::named::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
     {
-        std::swap( lhs.buffer(), rhs.buffer() );
+        std::swap( lhs.buffer_ref(), rhs.buffer_ref() );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ namespace om636
     auto persistent_subject<T>::temporary::value(persistent_subject & lhs) const -> value_type
     {
         value_type result;
-        std::stringstream( lhs.buffer() ) >> result;
+        std::stringstream( lhs.buffer_ref() ) >> result;
         return result;
     }
 
@@ -40,8 +40,8 @@ namespace om636
     {
         ASSERT( dynamic_cast<named *>( lhs.state_ref().get() ) );
 
-        string_type & value ( singleton_type::instance().storage()[ lhs.buffer() ] );
-        value = rhs.buffer();
+        string_type & value ( singleton_type::instance().storage()[ lhs.buffer_ref() ] );
+        value = rhs.buffer_ref();
 
         rhs.state_ref() = lhs.state_ref();
     }
@@ -92,14 +92,14 @@ namespace om636
         
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::buffer() -> string_type &
+    auto persistent_subject<T>::buffer_ref() -> string_type &
     {
         return m_buffer;
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::buffer() const -> string_type
+    auto persistent_subject<T>::buffer_ref() const -> const string_type &
     {
         return m_buffer;
     }
@@ -113,7 +113,7 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::state_ref() const -> state_pointer
+    auto persistent_subject<T>::state_ref() const -> const state_pointer &
     {
         return m_state;
     }
