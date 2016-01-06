@@ -31,9 +31,12 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::named::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
+    void persistent_subject<T>::named::on_swap(context_type & lhs, context_type & rhs) const 
     {
+        ASSERT( !dynamic_cast<temporary*>(lhs.state_ref().get()));
+
         std::swap( lhs.buffer_ref(), rhs.buffer_ref() );
+        std::swap( lhs.state_ref(), rhs.state_ref() );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,14 +50,15 @@ namespace om636
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::temporary::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
+    void persistent_subject<T>::temporary::on_swap(context_type & lhs, context_type & rhs) const 
     {
         ASSERT( dynamic_cast<named *>( lhs.state_ref().get() ) );
+   
+        singleton_type::instance().storage()[ lhs.buffer_ref() ] = rhs.buffer_ref();
 
-        string_type & value ( singleton_type::instance().storage()[ lhs.buffer_ref() ] );
-        value = rhs.buffer_ref();
-
+        rhs.buffer_ref() = lhs.buffer_ref();
         rhs.state_ref() = lhs.state_ref();
+        lhs.value_ref() = rhs.value_ref();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
