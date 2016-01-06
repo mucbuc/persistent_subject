@@ -3,71 +3,75 @@ namespace om636
 #pragma mark peristent_subject 
     
     /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>  
+    void persistent_subject<T>::state::init(persistent_subject & lhs, string_type value) const
+    {
+        lhs.buffer() = value;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     persistent_subject<T>::named::named(const string_type & name)
-    : m_name( name )
-    {}
+    {
+        // string_type & value ( singleton_type::instance().storage()[ m_buffer ] );
+        
+        // value_type result;
+        // stringstream( value ) >> result;
+        // return result;
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::named::on_swap(context_type & lhs, context_type & rhs)
+    auto persistent_subject<T>::named::value(persistent_subject & lhs) const -> value_type
     {
+        value_type result;
+        std::stringstream( singleton_type::instance().storage()[ lhs.buffer() ] ) >> result;
+        return result;
+    }
 
-    }
-    
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::named::name() -> string_type & 
+    void persistent_subject<T>::named::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
     {
-        return m_name;
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    auto persistent_subject<T>::named::name() const -> string_type
-    {
-        return m_name;
+        std::swap( lhs.buffer(), rhs.buffer() );
     }
      
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    persistent_subject<T>::temporary::temporary(const value_type & v)
-    : m_value(v)
-    {}
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    void persistent_subject<T>::temporary::on_swap(context_type & lhs, context_type & rhs)
+    auto persistent_subject<T>::temporary::value(persistent_subject & lhs) const -> value_type
     {
-        
-    }
-            
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    auto persistent_subject<T>::temporary::value() -> value_type & 
-    {
-        return m_value; 
+        value_type result;
+        std::stringstream( lhs.buffer() ) >> result;
+        return result;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::temporary::value() const -> value_type
+    void persistent_subject<T>::temporary::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
     {
-        return m_value; 
+        ASSERT( dynamic_cast<named *>( rhs.state_ref().get() ) ); 
+
+        string_type & value ( singleton_type::instance().storage()[ rhs.buffer() ] );
+        value = lhs.buffer(); 
+
+        lhs.state_ref() = rhs.state_ref();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     persistent_subject<T>::persistent_subject()
     : base_type()
-    , m_name()
+    , m_buffer()
+    , m_state(new temporary())
     {}
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     persistent_subject<T>::persistent_subject( const char * path )
     : base_type()
-    , m_name( path )
+    , m_buffer( path )
+    , m_state(new named(path))
     {
         singleton_type::instance().open( path );
     }
@@ -80,66 +84,51 @@ namespace om636
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     template<class U, class V> 
-    auto persistent_subject<T>::on_init(U & lhs, const V & init)->value_type
+    auto persistent_subject<T>::on_init(U & lhs, const V & init) -> value_type
     {
-        using std::stringstream;
+        std::stringstream tmp;
+        tmp << init;
 
-        if (lhs.m_name.empty()) 
-        {
-            lhs.m_local.reset( new value_type() );
-            
-            stringstream tmp;
-            tmp << init;
-            tmp >> * lhs.m_local;
-            return * lhs.m_local;
-        }
+        lhs.state_ref()->init(lhs, tmp.str());
 
-        string_type & value ( singleton_type::instance().storage()[ lhs.name() = init ] );
-        
-        value_type result;
-        stringstream( value ) >> result;
-        return result;
+        return lhs.state_ref()->value(lhs); 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     void persistent_subject<T>::on_swap(context_type & lhs, context_type & rhs)
     {
-        using namespace std;
-
-        if (rhs.m_local)
-        {
-            ASSERT( !lhs.name().empty() ); 
-
-            stringstream tmp; 
-            tmp << * rhs.m_local;
-
-            string & value ( singleton_type::instance().storage()[ lhs.name() ] );
-            value = tmp.str(); 
-
-            rhs.m_local.reset();
-            rhs.name() = lhs.name();
-        }
-        else 
-        {
-            std::swap(lhs.name(), rhs.name() );
-        }
-
+        lhs.state_ref()->on_swap(lhs,rhs);
         base_type::on_swap( lhs, rhs );
     }
         
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::name() -> string_type &
+    auto persistent_subject<T>::buffer() -> string_type &
     {
-        return m_name;
+        return m_buffer;
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
-    auto persistent_subject<T>::name() const -> string_type
+    auto persistent_subject<T>::buffer() const -> string_type
     {
-        return m_name;
+        return m_buffer;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::state_ref() -> state_pointer &
+    {
+        return m_state;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
+    auto persistent_subject<T>::state_ref() const -> state_pointer
+    {
+        return m_state;
+    }
+        
 
 }   // om636

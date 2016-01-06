@@ -30,48 +30,53 @@ namespace om636
 
         virtual void on_swap(context_type &, context_type &);
 
-        std::string & name();
-        std::string name() const;
-
     private:
-    
-        typedef std::string string_type; 
 
+
+        typedef std::string string_type; 
+        
         struct state
         {
             virtual ~state() = default;
-            virtual void on_swap(context_type & lhs, context_type & rhs) = 0; 
+            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const = 0; 
+            virtual value_type value(persistent_subject & lhs) const = 0;
+            void init(persistent_subject & lhs, string_type value) const; 
         };
+
+        typedef std::shared_ptr<state> state_pointer;
+
+        string_type & buffer();
+        string_type buffer() const;
+
+        state_pointer & state_ref();
+        state_pointer state_ref() const; 
 
         struct named : state
         {
             virtual ~named() = default;
             
             named(const string_type &); 
-            virtual void on_swap(context_type & lhs, context_type & rhs);
-            string_type & name();
-            string_type name() const;
-        private: 
-            string_type m_name;
+
+            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const; 
+            virtual value_type value(persistent_subject & lhs) const; 
         };
 
         struct temporary : state
         {
             virtual ~temporary() = default;
             
-            temporary(const value_type &); 
-            virtual void on_swap(context_type & lhs, context_type & rhs); 
-            value_type & value();
-            value_type value() const;
-        private: 
-            value_type m_value;
+            temporary() = default;
+
+            virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const;
+            virtual value_type value(persistent_subject & lhs) const; 
         };
 
         typedef om636::persistent< std::map< string_type, string_type > > persistent_type;
         typedef singleton< persistent_type, default_lifetime< persistent_type >, create_new< persistent_type > > singleton_type;
         
-        std::string m_name;
+        string_type m_buffer;
         std::shared_ptr<value_type> m_local;
+        std::shared_ptr<state> m_state;
     };
 }   //om636
 
