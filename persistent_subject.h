@@ -41,6 +41,8 @@ namespace om636
             virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const = 0; 
             virtual value_type value(persistent_subject & lhs) const = 0;
             void init(persistent_subject & lhs, string_type value) const; 
+        protected: 
+            static value_type get_value(const string_type &);
         };
 
         typedef std::shared_ptr<state> state_pointer;
@@ -52,7 +54,8 @@ namespace om636
         const state_pointer & state_ref() const; 
 
         struct named : state
-        {
+        {   
+            using state::get_value;
             virtual ~named() = default;
             virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const; 
             virtual value_type value(persistent_subject & lhs) const; 
@@ -60,6 +63,7 @@ namespace om636
 
         struct temporary : state
         {
+            using state::get_value;
             virtual ~temporary() = default;
             virtual void on_swap(persistent_subject & lhs, persistent_subject & rhs) const;
             virtual value_type value(persistent_subject & lhs) const; 

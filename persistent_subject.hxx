@@ -12,14 +12,21 @@ namespace om636
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>  
+    auto persistent_subject<T>::state::get_value(const string_type & str) -> value_type 
+    {
+        value_type result;
+        std::stringstream( str ) >> result;
+        return result;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
     // persistent_subject<T>::named
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
     auto persistent_subject<T>::named::value(persistent_subject & lhs) const -> value_type
     {
-        value_type result;
-        std::stringstream( singleton_type::instance().storage()[ lhs.buffer_ref() ] ) >> result;
-        return result;
+        return get_value( singleton_type::instance().storage()[ lhs.buffer_ref() ] );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,9 +42,7 @@ namespace om636
     template<class T>
     auto persistent_subject<T>::temporary::value(persistent_subject & lhs) const -> value_type
     {
-        value_type result;
-        std::stringstream( lhs.buffer_ref() ) >> result;
-        return result;
+        return get_value( lhs.buffer_ref() );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
