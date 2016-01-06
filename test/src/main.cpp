@@ -26,23 +26,22 @@ void test_persistence(U u, U v, std::string name)
     
         a = v;
     }
-
+    
     if (1)
     {
-     context_type a( name, path );
+        context_type a( name, path );
 
-     ASSERT( a.value_ref() == v );
+        ASSERT( a.value_ref() == v );
     }
 
-    if (0)
+    if (1)
     {
         context_type a( name, path );
 
         a = v = u;
 
-        ASSERT( a.value_ref() == u )( a.value_ref() );
+        ASSERT( a.value_ref() == u );
     }
-
 
     FOOTER;
 }
