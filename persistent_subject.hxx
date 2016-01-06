@@ -38,12 +38,12 @@ namespace om636
     template<class T>
     void persistent_subject<T>::temporary::on_swap(persistent_subject & lhs, persistent_subject & rhs) const 
     {
-        ASSERT( dynamic_cast<named *>( rhs.state_ref().get() ) ); 
+        ASSERT( dynamic_cast<named *>( lhs.state_ref().get() ) );
 
-        string_type & value ( singleton_type::instance().storage()[ rhs.buffer() ] );
-        value = lhs.buffer(); 
+        string_type & value ( singleton_type::instance().storage()[ lhs.buffer() ] );
+        value = rhs.buffer();
 
-        lhs.state_ref() = rhs.state_ref();
+        rhs.state_ref() = lhs.state_ref();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ namespace om636
     template<class T>
     void persistent_subject<T>::on_swap(context_type & lhs, context_type & rhs)
     {
-        lhs.state_ref()->on_swap(lhs,rhs);
+        rhs.state_ref()->on_swap(lhs,rhs);
         base_type::on_swap( lhs, rhs );
     }
         
