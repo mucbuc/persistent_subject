@@ -1,6 +1,5 @@
 {
 	"test/lib": [
-		"https://github.com/mucbuc/asserter.git",
 		"https://github.com/mucbuc/sense.git", 
 		"https://github.com/mucbuc/context.git",
 		"https://github.com/mucbuc/traverse.git",
