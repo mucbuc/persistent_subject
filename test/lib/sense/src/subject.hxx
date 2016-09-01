@@ -6,16 +6,6 @@ namespace om636
 	// basic_subject
 	/////////////////////////////////////////////////////////////////////////////////////////////
     template<class T, template<class> class U>
-    basic_subject<T, U>::basic_subject()
-    {}
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T, template<class> class U>
-    basic_subject<T, U>::~basic_subject()
-    {}
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T, template<class> class U>
     void basic_subject<T, U>::attach( observer_type & o )
     {
         observers().push_back( & o );
@@ -26,6 +16,16 @@ namespace om636
     void basic_subject<T, U>::detach( observer_type & o )
     {
         observers().erase( find( observers().begin(), observers().end(), & o ) );
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T, template<class> class U>
+    void basic_subject<T, U>::replace(observer_type & dest, observer_type & source)
+    {
+        auto pos( find( observers().begin(), observers().end(), & dest ) );
+        if (pos != observers().end()) {
+            * pos = & source;
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ namespace om636
     template<class V>
     typename basic_subject<T, U>::value_type basic_subject<T, U>::on_init(V & v)
     {
-        return value_type();
+        return value_type{};
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ namespace om636
     template<class V, class W>
     typename basic_subject<T, U>::value_type basic_subject<T, U>::on_init(V &, const W & v)
     {
-        return value_type(v);
+        return value_type{v};
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ namespace om636
     template<class V>
     V basic_subject<T, U>::to_value(const context_type & c)
     {
-        return V( c.value_ref() );
+        return V{ c.value_ref() };
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,6 +105,15 @@ namespace om636
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
+    void safe_subject<T>::replace(observer_type & dest, observer_type & source)
+    {
+        if (m_locked)
+            throw locked();
+        base_type::replace( dest, source );
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    template<class T>
     void safe_subject<T>::on_swap(context_type & lhs, context_type & rhs)
     {
         struct guard
@@ -143,11 +152,6 @@ namespace om636
     
     /////////////////////////////////////////////////////////////////////////////////////////////
 	// state_subject<N>
-	/////////////////////////////////////////////////////////////////////////////////////////////
-    template<class T>
-    state_subject<T>::~state_subject()
-    {}
-    
 	/////////////////////////////////////////////////////////////////////////////////////////////
     template<class T>
 	bool state_subject<T>::on_equal( const context_type & lhs, const context_type & rhs ) const

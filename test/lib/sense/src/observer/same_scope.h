@@ -16,9 +16,11 @@ namespace om636
 		
 		same_scope() = delete;
 		same_scope(const same_scope &) = delete;	
-		same_scope & operator=(const same_scope & ) = delete; 
-
-		virtual ~same_scope() = default;
+		same_scope & operator=(const same_scope & ) = delete;
+        same_scope(same_scope &&) = delete;
+        same_scope & operator=(same_scope &&) = delete;
+        
+        virtual ~same_scope() = default;
        
 	protected:
 		same_scope(context_type &);

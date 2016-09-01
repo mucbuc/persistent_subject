@@ -86,7 +86,7 @@ namespace om636
         U & policy<T>::on_write( U & s, const context_type & c )
         {
             Private::stream_out<U &> op = { s };
-            traverse::pairs( c.value_ref(), op );
+            traverse::pairs( c.value_ref(), op ); 
             return s;
         }
         
@@ -96,7 +96,9 @@ namespace om636
         U & policy<T>::on_read( U & s, context_type & c )
         {
             Private::stream_in<U &> op = { s };
-            traverse::pairs( c.value_ref(), op );
+            
+            // must specify value_type to prevent ambiguity on gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04)
+            traverse::pairs<value_type>( c.value_ref(), op );
             return s;
         }
     }

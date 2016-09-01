@@ -27,12 +27,17 @@ namespace om636
         typedef typename default_subject::traits<context_type>::value_type value_type;
         typedef U< context_type > observer_type;
 
-        basic_subject();
-        virtual ~basic_subject();
+        basic_subject() = default;
+        virtual ~basic_subject() = default;
         void attach(observer_type &);
 		void detach(observer_type &);
-   protected:
-     
+        void replace(observer_type &, observer_type &);
+        
+    protected:
+    
+        typedef std::vector< observer_type * > container_type;
+        typedef typename container_type::iterator iterator;
+
         virtual void on_swap(context_type &, context_type &);
         
         template<class V>
@@ -43,11 +48,6 @@ namespace om636
         
         template<class V>
         static V to_value(const context_type &);
-
-    protected:
-        
-        typedef std::vector< observer_type * > container_type;
-        typedef typename container_type::iterator iterator;
     
         container_type & observers();
         const container_type & observers() const;
@@ -74,6 +74,8 @@ namespace om636
         
         void attach(observer_type &);
         void detach(observer_type &);
+        void replace(observer_type &, observer_type &);
+        
         virtual void on_swap(context_type &, context_type &);
         
     private:
@@ -104,7 +106,7 @@ namespace om636
         using policy_type::to_value;
         using policy_type::state;
         
-        virtual ~state_subject();
+        virtual ~state_subject() = default;
         
         // comparisons
         virtual bool on_equal(const context_type &, const context_type &) const;
@@ -122,26 +124,6 @@ namespace om636
         virtual void on_dec(context_type &) const;
         virtual void on_invert(context_type &) const;
     };
-
-    // template<class T>
-    // struct batch_subject
-    // : default_subject::policy< T >
-    // {
-    //     typedef T context_type;
-    //     typedef typename default_subject::traits<context_type>::value_type value_type;
-    //     typedef U< context_type > * observer_type;
-    
-    //     virtual void on_swap(context_type &, context_type &);
-        
-    //     template<class V>
-    //     static value_type on_init(V &);
-        
-    //     template<class V, class W>
-    //     static value_type on_init(V &, const W &);
-        
-    //     template<class V>
-    //     static V to_value(const context_type &);
-    // };
 
 }	// om636
 

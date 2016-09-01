@@ -15,14 +15,18 @@ namespace om636
 		typedef const_observer<context_type> base_type;
 		
 		sub_scope() = delete;
-		sub_scope(const sub_scope &) = delete;	
-		sub_scope & operator=(const sub_scope & ) = delete; 
-
+        sub_scope(const sub_scope &) = delete;
+        sub_scope & operator=(sub_scope &&) = delete;
+        sub_scope & operator=(const sub_scope &) = delete;
+        
 		virtual ~sub_scope();
        
 	protected:
+        
 		sub_scope(context_type &);
-        context_type & context() const; 
+        sub_scope(sub_scope &&);
+        
+        context_type & context() const;
         
 	private:
 		context_type & m_context; 
