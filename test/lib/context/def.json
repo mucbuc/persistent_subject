@@ -1,4 +1,8 @@
 {
+	"includes": [
+		"../drop/def.json",
+		"../traverse/traverse.json"
+	],
 	"sources": [
 		"src/default_subject.h",
 		"src/default_subject.hxx",
