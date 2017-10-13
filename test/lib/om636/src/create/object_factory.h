@@ -22,46 +22,44 @@
 */
 
 #ifndef _object_factory_H_89033300
-	#define _object_factory_H_89033300
+#define _object_factory_H_89033300
 
-#include <map>
 #include "componentsfwd.h"
 #include "createfwd.h"
 #include "typetraits.h"
+#include <map>
 
-namespace om636
-{
-	using namespace std;
+namespace om636 {
+using namespace std;
 
-	template<class T, class F, class E>
-	class object_factory
-	{ 
-	public:	
-		typedef T key_type;
-		typedef F functor_type;
-		typedef E error_policy;
-        //typedef typename om636::type_traits< functor_type >::return_type return_type;
-		typedef typename functor_type::return_type return_type;
-        typedef map< key_type, functor_type > map_type;
-		typedef typename map_type::iterator iterator_type;
-		typedef typename map_type::const_iterator const_iterator;
-				
-		object_factory();
-		bool register_create( const key_type &, const functor_type&);		
-		bool unregister_create( const key_type & );
-		
-		virtual return_type create( const key_type & ) const;
-		
-	private:	
-		map_type _creator;
-		
-		// blocked 
-		object_factory( const object_factory& );
-		object_factory & operator=(const object_factory&);
-	};
-	
+template <class T, class F, class E>
+class object_factory {
+public:
+    typedef T key_type;
+    typedef F functor_type;
+    typedef E error_policy;
+    //typedef typename om636::type_traits< functor_type >::return_type return_type;
+    typedef typename functor_type::return_type return_type;
+    typedef map<key_type, functor_type> map_type;
+    typedef typename map_type::iterator iterator_type;
+    typedef typename map_type::const_iterator const_iterator;
+
+    object_factory();
+    bool register_create(const key_type&, const functor_type&);
+    bool unregister_create(const key_type&);
+
+    virtual return_type create(const key_type&) const;
+
+private:
+    map_type _creator;
+
+    // blocked
+    object_factory(const object_factory&);
+    object_factory& operator=(const object_factory&);
+};
+
 } // om636
-	
+
 #include "object_factory.hxx"
 
 #endif // _object_factory_H_89033300
