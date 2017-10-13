@@ -1,5 +1,3 @@
-namespace om636
-{
-    
-} // om636
+namespace om636 {
 
+} // om636
